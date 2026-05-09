@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useOptimistic } from 'react'
 import { 
   Table, 
   TableBody, 
@@ -42,12 +42,23 @@ export default function ValidationClient({ initialShifts, employees }: any) {
   const [loadingId, setLoadingId] = useState<string | null>(null)
   const [isBulkLoading, setIsBulkLoading] = useState(false)
 
+  // Optimistic UI for instant feedback
+  const [optimisticShifts, removeOptimisticShift] = useOptimistic(
+    initialShifts,
+    (state: any[], idToRemove: string | string[]) => {
+      if (Array.isArray(idToRemove)) {
+        return state.filter(s => !idToRemove.includes(s.id))
+      }
+      return state.filter(s => s.id !== idToRemove)
+    }
+  )
+
   const filteredShifts = useMemo(() => {
-    return initialShifts.filter((s: any) => {
+    return optimisticShifts.filter((s: any) => {
       if (filterEmployee !== 'all' && s.user_id !== filterEmployee) return false
       return true
     })
-  }, [initialShifts, filterEmployee])
+  }, [optimisticShifts, filterEmployee])
 
   const toggleSelect = (id: string) => {
     setSelectedIds(prev => 
@@ -64,32 +75,31 @@ export default function ValidationClient({ initialShifts, employees }: any) {
   }
 
   const handleValidate = async (id: string) => {
-    setLoadingId(id)
+    removeOptimisticShift(id)
     const res = await validateShift(id)
     if (res.success) toast.success('Shift validé avec succès !')
     else toast.error('Erreur lors de la validation')
-    setLoadingId(null)
   }
 
   const handleReject = async (id: string) => {
-    setLoadingId(id)
+    removeOptimisticShift(id)
     const res = await rejectShift(id)
     if (res.success) toast.success('Shift rejeté')
     else toast.error('Erreur')
-    setLoadingId(null)
   }
 
   const handleBulkValidate = async () => {
     if (selectedIds.length === 0) return
-    setIsBulkLoading(true)
-    const res = await bulkValidate(selectedIds)
+    const idsToProcess = [...selectedIds]
+    removeOptimisticShift(idsToProcess)
+    setSelectedIds([])
+    
+    const res = await bulkValidate(idsToProcess)
     if (res.success) {
-      toast.success(`${selectedIds.length} shifts validés !`)
-      setSelectedIds([])
+      toast.success(`${idsToProcess.length} shifts validés !`)
     } else {
       toast.error('Erreur lors de la validation groupée')
     }
-    setIsBulkLoading(false)
   }
 
   const calculateHours = (s: any) => {

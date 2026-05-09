@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { DemoBanner } from "@/components/demo-banner";
 import { Analytics } from "@vercel/analytics/react"
+import NextTopLoader from 'nextjs-toploader';
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", inter.variable)} suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
+        <NextTopLoader color="#FF6B6B" showSpinner={false} />
         <DemoBanner />
         {children}
         <Toaster position="top-right" richColors />

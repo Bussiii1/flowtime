@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { toast } from 'sonner' // Optional, but I'll use a simple alert if not installed
+import { Logo } from '@/components/brand/logo'
 import { Loader2 } from 'lucide-react'
 
 export default function LoginPage() {

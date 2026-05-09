@@ -11,6 +11,7 @@ import { Loader2, Camera, LogOut, ShieldCheck, Euro, CreditCard, QrCode, Refresh
 import { Badge } from '@/components/ui/badge'
 import { QRCodeSVG } from 'qrcode.react'
 import { jsPDF } from 'jspdf'
+import { LogoutButton } from '@/components/auth/logout-button'
 
 export default function ProfileClient({ profile, contract, userEmail }: any) {
   const [loading, setLoading] = useState(false)
@@ -229,12 +230,7 @@ export default function ProfileClient({ profile, contract, userEmail }: any) {
         </Button>
       </form>
 
-      <form action="/auth/signout" method="post">
-        <Button variant="outline" type="submit" className="w-full border-2 text-destructive border-destructive/20 hover:bg-destructive/5">
-          <LogOut className="mr-2 h-5 w-5" />
-          Se déconnecter
-        </Button>
-      </form>
+      <LogoutButton />
     </div>
   )
 }

@@ -24,6 +24,7 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
+import { LogoutButton } from '@/components/auth/logout-button'
 
 export default async function AdminLayout({
   children,
@@ -121,11 +122,7 @@ export default async function AdminLayout({
                 <DropdownMenuItem>Profil</DropdownMenuItem>
                 <DropdownMenuItem>Paramètres</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <form action="/auth/signout" method="post" className="w-full">
-                  <button type="submit" className="w-full text-left">
-                    <DropdownMenuItem className="text-destructive">Se déconnecter</DropdownMenuItem>
-                  </button>
-                </form>
+                <LogoutButton variant="dropdown" />
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

@@ -21,10 +21,9 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
 import { LogoutButton } from '@/components/auth/logout-button'
+import { StoreProvider } from '@/components/providers/store-provider'
 
 export default async function AdminLayout({
   children,
@@ -130,7 +129,9 @@ export default async function AdminLayout({
 
         {/* Content */}
         <main className="p-8">
-          {children}
+          <StoreProvider>
+            {children}
+          </StoreProvider>
         </main>
       </div>
     </div>
